@@ -52,6 +52,10 @@ public class ATM {
         String inputNumber;
         do {
             inputNumber = userInputController.inputNumberForLogin();
+            System.out.println();
+        }while (!dataBase.verifyNumber(inputNumber));
+        do {
+
             String inputPin = userInputController.inputPinForLogin();
 
             System.out.println();
@@ -134,7 +138,6 @@ public class ATM {
             } else System.out.println("Such a card does not exist.\n");
         }else System.out.println("Probably you made mistake in the card number. Please try again!\n");
     }
-
 
     public void closeAccount(Account account){
         dataBase.deleteAccount(account);

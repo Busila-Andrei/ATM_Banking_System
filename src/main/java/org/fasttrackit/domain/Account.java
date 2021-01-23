@@ -3,7 +3,7 @@ package org.fasttrackit.domain;
 public class Account {
     private final String iban;
     private double balance;
-    private Card card;
+    private final Card card;
 
     public Account(String iban,Card card){
         this.balance = 0;

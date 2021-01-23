@@ -95,6 +95,23 @@ public class DataBase {
         }
     }
 
+    public Boolean verifyNumber(String codeNumber){
+        String sql = "SELECT number FROM card";
+
+        try (Statement stmt  = connect().createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+                if (rs.getString("number").compareTo(codeNumber)==0)
+                    return true;
+            }
+        } catch (SQLException e) {
+            out.println(e.getMessage());
+        }
+        return false;
+    }
+
     //Verify if exist card
     public Boolean verifyLogin(String codeNumber, String codePin){
         String sql = "SELECT number, pin FROM card";
@@ -112,7 +129,6 @@ public class DataBase {
             out.println(e.getMessage());
         }
         return false;
-
     }
 
     public boolean verifyLock(String codeNumber){

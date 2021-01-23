@@ -61,7 +61,7 @@ public class DataBase {
     }
 
     //Verify if exist number/pin in database and return "false" if exist
-    public boolean verifyExist(String codeIban,String codeNumber, String codePin){
+    public boolean verifyExist(String codeIban,String codeNumber){
         String sql = "SELECT iban, number, pin FROM card";
 
         try (Statement stmt  = connect().createStatement();
@@ -69,8 +69,7 @@ public class DataBase {
 
             while (rs.next()) {
                 if ( rs.getString("iban").compareTo(codeIban)==0||
-                        rs.getString("number").compareTo(codeNumber)==0 ||
-                        rs.getString("pin").compareTo(codePin)==0)
+                        rs.getString("number").compareTo(codeNumber)==0)
                     return false;
             }
         } catch (SQLException e) {
@@ -235,9 +234,9 @@ public class DataBase {
         return false;
     }
 
-    public void transferMoney(String number, String numberTo, double money){
+    public void transferMoney(String number, String ibanTo, double money){
         String sql1 = "UPDATE card SET balance = balance - ? WHERE number = ?";
-        String sql2 = "UPDATE card SET balance = balance + ? WHERE number = ?";
+        String sql2 = "UPDATE card SET balance = balance + ? WHERE iban = ?";
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt1 = conn.prepareStatement(sql1);
@@ -246,7 +245,7 @@ public class DataBase {
             pstmt1.setString(2, number);
             pstmt1.executeUpdate();
             pstmt2.setDouble(1, money);
-            pstmt2.setString(2, numberTo);
+            pstmt2.setString(2, ibanTo);
             pstmt2.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -267,23 +266,6 @@ public class DataBase {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    public boolean existPin(String codePin){
-        String sql = "SELECT pin FROM card";
-
-        try (Statement stmt  = connect().createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
-            // loop through the result set
-            while (rs.next()) {
-                if (rs.getString("pin").compareTo(codePin)==0)
-                    return false;
-            }
-        } catch (SQLException e) {
-            out.println(e.getMessage());
-        }
-        return true;
     }
 
     public void changePin(Account account, String pin){

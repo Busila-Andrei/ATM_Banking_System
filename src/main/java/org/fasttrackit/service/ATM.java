@@ -39,6 +39,8 @@ public class ATM {
     public void createCard(){
         Account account = Generator.create(dataBase);
         System.out.println("Your card has been created");
+        System.out.println("Your IBAN:");
+        System.out.println(account.getIban());
         System.out.println("Your card number:");
         System.out.println(account.getCard().getNumber());
         System.out.println("Your card PIN:");
@@ -100,9 +102,8 @@ public class ATM {
                 case 5:
                     break menuLogin;
                 case 6:
-                    if (changePin(account))
-                        break menuLogin;
-                    else break ;
+                    changePin(account);
+                    break menuLogin;
                 case 0:
                     System.out.println("Bye!");
                     isExit = true;
@@ -114,7 +115,7 @@ public class ATM {
     }
 
     public void printBalance(Account account){
-        System.out.println("\nBalance: " + dataBase.selectBalance(account) + "\n");
+        System.out.println("\nBalance: " + dataBase.selectBalance(account) + "$\n");
     }
 
     public void addIncome(Account account){
@@ -144,13 +145,10 @@ public class ATM {
         System.out.println("The account has been closed!");
     }
 
-    public boolean changePin(Account account){
+    public void changePin(Account account){
         String pin = userInputController.inputNewPin();
-        if(dataBase.existPin(pin)){
             dataBase.changePin(account,pin);
+            account.getCard().setPin(pin);
             System.out.println("The pin has been changed.\n");
-            return true;
-        }else System.out.println("The pin is already in use.\n");
-        return false;
     }
 }

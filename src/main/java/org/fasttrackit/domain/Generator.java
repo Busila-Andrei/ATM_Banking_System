@@ -14,7 +14,7 @@ public class Generator {
             number = getNewNumber();
             pin = getNewPin();
             iban = getNewIBAN();
-            nonUnique = dataBase.verifyExist(iban,number,pin);
+            nonUnique = dataBase.verifyExist(iban,number);
         } while (!nonUnique);
         return new Account(iban,new Card(number, pin));
     }

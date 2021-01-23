@@ -44,7 +44,7 @@ public class StdinController implements UserInputController{
     @Override
     public String inputIbanForSendMoney() {
         System.out.println("Transfer");
-        System.out.println("Enter card number:");
+        System.out.println("Enter account iban:");
         return ScannerUtils.nextLine();
     }
 

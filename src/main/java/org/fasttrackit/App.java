@@ -1,13 +1,17 @@
 package org.fasttrackit;
 
-/**
- * Hello world!
- *
- */
+import org.fasttrackit.persistance.DataBase;
+import org.fasttrackit.service.ATM;
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        String locationDB = "database/db.db";
+        DataBase dataBase = new DataBase(locationDB);
+        dataBase.createNewDatabase();
+        dataBase.createTableCard();
+        ATM atm = new ATM(dataBase);
+        atm.menuStart();
     }
 }

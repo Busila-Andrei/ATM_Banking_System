@@ -4,7 +4,7 @@ import org.fasttrackit.controller.StdinController;
 import org.fasttrackit.controller.UserInputController;
 import org.fasttrackit.domain.Account;
 import org.fasttrackit.domain.GeneratesCard;
-import org.fasttrackit.domain.algorithms.MOD97;
+import org.fasttrackit.domain.algorithm.MOD97;
 import org.fasttrackit.persistance.DataBase;
 
 public class ATM {

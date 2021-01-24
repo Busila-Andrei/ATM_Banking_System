@@ -1,4 +1,4 @@
-package org.fasttrackit.domain;
+package org.fasttrackit.domain.algorithms;
 
 public class Luth {
 

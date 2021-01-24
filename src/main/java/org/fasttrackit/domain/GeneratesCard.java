@@ -1,5 +1,7 @@
 package org.fasttrackit.domain;
 
+import org.fasttrackit.domain.algorithms.Luth;
+import org.fasttrackit.domain.algorithms.MOD97;
 import org.fasttrackit.persistance.DataBase;
 
 import java.util.Random;

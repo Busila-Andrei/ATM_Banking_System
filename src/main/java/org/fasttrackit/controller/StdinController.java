@@ -4,11 +4,12 @@ import org.fasttrackit.controller.utils.ScannerUtils;
 
 public class StdinController implements UserInputController{
     @Override
-    public int inputChoiceInMenuStart() {
+    public String inputChoiceInMenuStart() {
         System.out.println("1. Create an account");
         System.out.println("2. Log into account");
         System.out.println("0. Exit");
-        return ScannerUtils.nextIntAndMoveToNextLine();
+        System.out.print("Input: ");
+        return ScannerUtils.nextLine();
     }
 
     @Override
@@ -24,7 +25,7 @@ public class StdinController implements UserInputController{
     }
 
     @Override
-    public int inputChoiceInMenuLogin() {
+    public String inputChoiceInMenuLogin() {
         System.out.println("1. Balance");
         System.out.println("2. Add income");
         System.out.println("3. Do transfer");
@@ -32,12 +33,13 @@ public class StdinController implements UserInputController{
         System.out.println("5. Log out");
         System.out.println("6. Change pin");
         System.out.println("0. Exit");
-        return ScannerUtils.nextIntAndMoveToNextLine();
+        System.out.print("Input: ");
+        return ScannerUtils.nextLine();
     }
 
     @Override
     public Double inputAddIncome() {
-        System.out.println("Enter income:");
+        System.out.print("Enter income: ");
         return ScannerUtils.nextDoubleAndMoveToNextLine();
     }
 

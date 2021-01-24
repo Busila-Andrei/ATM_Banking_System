@@ -2,13 +2,13 @@ package org.fasttrackit.controller;
 
 public interface UserInputController {
 
-    int inputChoiceInMenuStart();
+    String inputChoiceInMenuStart();
 
     String inputNumberForLogin();
 
     String inputPinForLogin();
 
-    int inputChoiceInMenuLogin();
+    String inputChoiceInMenuLogin();
 
     Double inputAddIncome();
 

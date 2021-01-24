@@ -7,7 +7,14 @@ public class App
 {
     public static void main( String[] args )
     {
-        String locationDB = "database/db.db";
+
+        /*
+            Error
+            File -> Project Structure -> Global Libraries -> + -> From maven
+            check org.xerial:sqlite-jdbc:3.34.0 and install
+         */
+
+        String locationDB = "database/ingb.db";
         DataBase dataBase = new DataBase(locationDB);
         dataBase.createNewDatabase();
         dataBase.createTableCard();

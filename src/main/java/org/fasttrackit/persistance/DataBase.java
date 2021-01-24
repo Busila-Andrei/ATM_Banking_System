@@ -14,7 +14,7 @@ public class DataBase {
         url = "jdbc:sqlite:" + locationDB;
     }
 
-    //Connect to database
+    //conectarea la o baza de date
     private Connection connect() {
         // SQLite connection string
 
@@ -27,7 +27,7 @@ public class DataBase {
         return conn;
     }
 
-    //Create new database
+    //crearea unei baze de date
     public void createNewDatabase() {
 
         try (Connection conn = DriverManager.getConnection(url)) {
@@ -40,9 +40,8 @@ public class DataBase {
         }
     }
 
-    //Create table Card
+    //crearea tabelului card
     public void createTableCard() {
-
         String sql = "CREATE TABLE IF NOT EXISTS card (\n"
                 + "    id INTEGER PRIMARY KEY ASC,\n"
                 + "    iban TEXT,\n"
@@ -60,7 +59,7 @@ public class DataBase {
         }
     }
 
-    //Verify if exist number/pin in database and return "false" if exist
+    //verifica daca exista un IBAN sau number in baza de date
     public boolean verifyExist(String codeIban,String codeNumber){
         String sql = "SELECT iban, number, pin FROM card";
 
@@ -78,7 +77,7 @@ public class DataBase {
         return true;
     }
 
-    //Insert a new card
+    //inserarea unui card
     public void insertNewCard(String cardIban, String cardNumber, String cardPin, double balance){
         String sql = "INSERT INTO card(iban,number,pin,balance) VALUES(?,?,?,?)";
 
@@ -111,7 +110,7 @@ public class DataBase {
         return false;
     }
 
-    //Verify if exist card
+    //verifica daca exista un card specific cu un pin specific
     public Boolean verifyLogin(String codeNumber, String codePin){
         String sql = "SELECT number, pin FROM card";
 
@@ -130,6 +129,7 @@ public class DataBase {
         return false;
     }
 
+    // verifica daca cardul este blocat
     public boolean verifyLock(String codeNumber){
         String sql = "SELECT lock FROM card WHERE number = " + codeNumber;
 
@@ -149,7 +149,7 @@ public class DataBase {
         return false;
     }
 
-    //select the account after login
+    //selecteaza contul dupa ce cardul a fost detectat
     public Account selectAccount(String codeNumber){
         Card card = null;
         double balanced = 0;
@@ -175,6 +175,7 @@ public class DataBase {
         return new Account(iban,balanced,card);
     }
 
+    // seteaza blocarea cardului
     public void setLock(String codeNumber){
         String sql = "UPDATE card SET lock = 'closed' WHERE number = ?";
 
@@ -186,7 +187,7 @@ public class DataBase {
         }
     }
 
-    //select the account balance
+    //selecteaza balanta contului
     public double selectBalance(Account account){
         double balanced = 0;
 
@@ -206,6 +207,7 @@ public class DataBase {
         return balanced;
     }
 
+    // seteaza o noua balanta cu suma introdusa
     public void insertIncome(Account account, double income){
         String sql = "UPDATE card SET balance = balance + ? WHERE number = ?";
 
@@ -218,6 +220,7 @@ public class DataBase {
         }
     }
 
+    //verifica daca exista un iban unde poate fi transferata o suma de bani
     public boolean verifyExistAccountForSendMoney(String iban){
         String sql = "SELECT iban FROM card";
 
@@ -234,6 +237,7 @@ public class DataBase {
         return false;
     }
 
+    // seteaza noile balante pentru contul de transfer si cel care transfera
     public void transferMoney(String number, String ibanTo, double money){
         String sql1 = "UPDATE card SET balance = balance - ? WHERE number = ?";
         String sql2 = "UPDATE card SET balance = balance + ? WHERE iban = ?";
@@ -252,7 +256,7 @@ public class DataBase {
         }
     }
 
-    //delete the account from the database
+    //sterge un cont din baza de date
     public void deleteAccount(Account account){
         String sql = "DELETE FROM card WHERE number = ?";
 
@@ -268,6 +272,7 @@ public class DataBase {
         }
     }
 
+    //seteaza un nou cod pin
     public void changePin(Account account, String pin){
         String sql = "UPDATE card SET pin = ? WHERE number = ?";
 
@@ -280,7 +285,7 @@ public class DataBase {
         }
     }
 
-    //close database
+    //inchiderea bazei de date
     public void close() {
         try {
             connect().close();

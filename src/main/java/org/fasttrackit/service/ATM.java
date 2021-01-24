@@ -3,8 +3,8 @@ package org.fasttrackit.service;
 import org.fasttrackit.controller.StdinController;
 import org.fasttrackit.controller.UserInputController;
 import org.fasttrackit.domain.Account;
-import org.fasttrackit.domain.Generator;
-import org.fasttrackit.domain.MOD97_10;
+import org.fasttrackit.domain.GeneratesCard;
+import org.fasttrackit.domain.MOD97;
 import org.fasttrackit.persistance.DataBase;
 
 public class ATM {
@@ -18,33 +18,32 @@ public class ATM {
     public void menuStart(){
         boolean isExit = false;
         while (!isExit) {
-            int choice = userInputController.inputChoiceInMenuStart();
+            String choice = userInputController.inputChoiceInMenuStart();
             System.out.println();
             switch (choice) {
-                case 1:
+                case "1":
                     createCard();
                     break;
-                case 2:
+                case "2":
                     isExit=login();
                     break;
-                case 0:
-                    System.out.println("Bye!");
+                case "0":
+                    System.out.println("Good day!");
                     isExit = true;
                     dataBase.close();
                     break;
+                default:
+                    System.out.println("You entered the wrong value. Please try again.\n");
             }
         }
     }
 
     public void createCard(){
-        Account account = Generator.create(dataBase);
+        Account account = GeneratesCard.create(dataBase);
         System.out.println("Your card has been created");
-        System.out.println("Your IBAN:");
-        System.out.println(account.getIban());
-        System.out.println("Your card number:");
-        System.out.println(account.getCard().getNumber());
-        System.out.println("Your card PIN:");
-        System.out.println(account.getCard().getPin());
+        System.out.printf("IBAN: %s\n",account.getIban());
+        System.out.printf("NUMBER: %s\n",account.getCard().getNumber());
+        System.out.printf("PIN: %s\n",account.getCard().getPin());
         dataBase.insertNewCard(account.getIban(),account.getCard().getNumber(), account.getCard().getPin(), account.getBalance());
         System.out.println();
     }
@@ -84,31 +83,33 @@ public class ATM {
     public boolean menuLogin(Account account){
         boolean isExit = false;
         menuLogin : for (;;) {
-            int choice = userInputController.inputChoiceInMenuLogin();
+            String choice = userInputController.inputChoiceInMenuLogin();
             System.out.println();
             switch (choice) {
-                case 1:
+                case "1":
                     printBalance(account);
                     break;
-                case 2:
+                case "2":
                     addIncome(account);
                     break;
-                case 3:
+                case "3":
                     transferMoney(account);
                     break;
-                case 4:
+                case "4":
                     closeAccount(account);
                     break menuLogin;
-                case 5:
+                case "5":
                     break menuLogin;
-                case 6:
+                case "6":
                     changePin(account);
                     break menuLogin;
-                case 0:
-                    System.out.println("Bye!");
+                case "0":
+                    System.out.println("Good day!");
                     isExit = true;
                     dataBase.close();
                     break menuLogin;
+                default:
+                    System.out.println("You entered the wrong value. Please try again.\n");
             }
         }
         return isExit;
@@ -128,7 +129,7 @@ public class ATM {
     public void transferMoney(Account account){
         String ibanToSend = userInputController.inputIbanForSendMoney();
         double money;
-        if (MOD97_10.verifyMOD97_10(ibanToSend)){
+        if (MOD97.verifyMOD97_10(ibanToSend)){
             if (dataBase.verifyExistAccountForSendMoney(ibanToSend)) {
                 money = userInputController.inputMoneyForSend();
                 if (account.getBalance() >= money) {
